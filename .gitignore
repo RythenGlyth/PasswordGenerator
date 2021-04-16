@@ -1,0 +1,4 @@
+node_modules/
+.vscode/
+favourites.json
+package-lock.json
