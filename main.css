@@ -1,0 +1,148 @@
+@import url(https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap);
+
+* {
+    font-family: 'Roboto', sans-serif;
+    user-select: none;
+}
+
+body {
+    margin: 0;
+}
+
+*::-webkit-scrollbar {
+    width: 12px !important;
+    height: 12px !important;
+}
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.nicelayout {
+    background-color: #333;
+    width: 100%;
+    min-height: 100%;
+    -webkit-align-items: center;
+    align-items: center;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    z-index: 2;
+}
+.nicelayout::before {
+    height: 222px;
+    background-color: rgb(30, 125, 190);
+    box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    content: '';
+    position: fixed;
+    top: 0;
+}
+
+.nicepane {
+    box-shadow: 0 17px 50px 0 rgba(0, 0, 0, 0.19), 0 12px 15px 0 rgba(0, 0, 0, 0.24);
+    z-index: 2;
+    display: flex;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    overflow: hidden;
+    align-items: center;
+    flex: none;
+    min-height: 39px;
+    width: 650px;
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    padding: 64px 60px 110px 60px;
+    margin: 100px 0 100px 0;
+    color: #fff;
+}
+
+input[type=button], button {
+    border-radius: 2px;
+    padding: 5px 20px 5px 20px;
+    border: 0;
+    background-color: rgb(30, 125, 190);
+    color: #fff;
+    outline: 0;
+}
+
+input[type=button]:hover, button:hover {
+    background-color: #06a10B;
+}
+
+input[type=button]:pressed, button:pressed {
+    background-color: #1d800e;
+}
+
+input[type=checkbox] {
+    background-color: rgb(30,125,190);
+}
+
+input[type=number], input[type=text] {
+    background-color: rgb(30,125,190);
+    outline: 0;
+    border-radius: 2px;
+    border: 1px #ccc;
+    padding: 3px;
+    margin: 2px;
+    color: #ddd;
+}
+
+input {
+    font-family: monospace;
+
+}
+
+input[type=number] {
+    width: 50px;
+    outline: 0;
+}
+
+#passwordlist {
+    border-spacing: 5px;
+    color: #fff;
+}
+
+.textTd {
+    user-select: text;
+    padding-left: 20px;
+}
+
+.copyBtn {
+    width: 80px;
+}
+
+#optionsForm {
+    text-align: left;
+}
+
+.passwordListEntry {
+    user-select: text;
+    padding: 10px;
+    margin: center;
+}
+
+html {
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+}
+
+.box {
+    background-color: rgba(0, 0, 0, 30);
+    border-top: 6px solid #b0b0b0;
+    border-bottom: 6px solid #b0b0b0;
+    padding: 10px;
+}
+
+#genBtn {
+    margin: 30px;
+}
+
+textarea {
+    outline: none;
+    resize: none;
+}

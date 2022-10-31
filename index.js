@@ -1,43 +1,67 @@
-const express = require('express')
-const path = require('path')
-const hbs = require("express-handlebars");
-
-const app = express()
-app.engine('hbs', hbs({
-    extname: 'hbs',
-    defaultLayout: 'defaultlayout',
-    layoutsDir: __dirname + "/layout"
-}));
-app.set("views", path.join(__dirname, "/views"));
-app.set("view engine", "hbs");
-app.use(express.static(path.join(__dirname, '/public')));
-
-app.get("/", (req, res) => {
-    res.render("index", {
-        numbers: didgets.numbers,
-        symbols: didgets.symbols,
+document.getElementById("genBtn").addEventListener("click", () => {
+    var options = {};
+    Array.from(document.getElementById("optionsForm").children).forEach((option) =>  {
+        if(option.type == "checkbox") {
+            options[option.name] = option.checked;
+        } else {
+            options[option.name] = option.value;
+        }
     });
-})
-app.get("/favourites", (req, res) => {
-    res.render("favourites");
-})
- 
-var serv = app.listen(process.env.PORT || 80);
-
-var io = require('socket.io')(serv, {});
-
-var sockets = [];
-
-io.on("connection", (socket) => {
-    socket.on("generate", (args) => {
-        socket.emit("updatePasswords", {
-            passwords: generatePasswords(args.options)
-        });
+    generatePasswords(options).forEach(password => {
+        addPasswordListEntry(password);
     });
 });
 
-const didgets = {
-    vocals: [
+document.getElementById("cleaBtn").addEventListener("click", () => {
+    document.getElementById("passwordlist").innerHTML = "";
+});
+
+document.addEventListener("click", (event) => {
+        console.log(event)
+    if(event.target && event.target.classList.contains("copyBtn")) {
+        document.execCommand("copy");
+        var selection = window.getSelection();
+        var range = document.createRange();
+
+        range.selectNodeContents(event.target.parentElement.parentElement.getElementsByClassName("textTd")[0]);
+
+        var oldrange = selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("Copy");
+        selection.removeAllRanges();
+        if(oldrange) selection.addRange(oldrange);
+
+        event.target.innerText = "Copied";
+
+        setTimeout(() => {
+            event.target.innerText = "Copy";
+        }, 2 * 1000);
+
+    }
+});
+
+function addPasswordListEntry(text) {
+    var passwordListEntry = document.createElement("tr");
+
+    var copyBtnTd = document.createElement("td");
+    var copyBtn = document.createElement("button");
+    copyBtn.classList.add("copyBtn");
+    copyBtn.innerText = "Copy";
+    copyBtnTd.appendChild(copyBtn);
+
+    var textTd = document.createElement("td");
+    textTd.classList.add("textTd");
+    textTd.innerText = text;
+
+    passwordListEntry.appendChild(copyBtnTd);
+    passwordListEntry.appendChild(textTd);
+
+    document.getElementById("passwordlist").appendChild(passwordListEntry);
+}
+
+const digits = {
+    vowels: [
         'a', 'A', 'e', 'E', 'i', 'I', 'o', 'O', 'u', 'U',
     ],
     consonants: [
@@ -47,15 +71,12 @@ const didgets = {
     numbers: [
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
     ],
-    symbols: [
+    get symbols() { return document.getElementById("syms").value.split("") },
+    /*[
         '@', '#', '*', '+', '~', '-', '_', '.', ',', ';', ':', '?', '/', '!', '|'
-    ],
-    symbolsnumbers: [],
-    all: [],
+    ],*/
 };
-didgets.letters = didgets.vocals.concat(didgets.consonants);
-didgets.symbolsnumbers = didgets.numbers.concat(didgets.symbols);
-didgets.all = didgets.letters.concat(didgets.symbolsnumbers);
+digits.letters = digits.vowels.concat(digits.consonants);
 
 function randomFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -67,17 +88,17 @@ function generateSpeakablePasswords(length, numbers, symbols, suffixLengthMin, s
     while(result.length < length - suffixLength) {
         var toAdd;
         if(Math.floor(Math.random() * 2) == 1) {
-            toAdd = randomFromArray(didgets.vocals) + randomFromArray(didgets.consonants);
+            toAdd = randomFromArray(digits.vowels) + randomFromArray(digits.consonants);
         } else {
-            toAdd = randomFromArray(didgets.consonants) + randomFromArray(didgets.vocals);
+            toAdd = randomFromArray(digits.consonants) + randomFromArray(digits.vowels);
         }
 
         result += toAdd;
     }
     result = result.substring(0, length - suffixLength);
     var chars = [];
-    if(numbers) chars = chars.concat(didgets.numbers);
-    if(symbols && !lastSymbol) chars = chars.concat(didgets.symbols);
+    if(numbers) chars = chars.concat(digits.numbers);
+    if(symbols && !lastSymbol) chars = chars.concat(digits.symbols);
     while(result.length < length - (lastSymbol ? 1 : 0)) {
         var toAdd;
         toAdd = randomFromArray(chars);
@@ -85,16 +106,16 @@ function generateSpeakablePasswords(length, numbers, symbols, suffixLengthMin, s
     }
 
     if(lastSymbol) {
-        result += randomFromArray(didgets.symbols);
+        result += randomFromArray(digits.symbols);
     }
 
     return result.substring(0, length);
 }
 
 function generateNormalPasswords(length, numbers, symbols) {
-    var chars = didgets.letters;
-    if(numbers) chars = chars.concat(didgets.numbers);
-    if(symbols) chars = chars.concat(didgets.symbols);
+    var chars = digits.letters;
+    if(numbers) chars = chars.concat(digits.numbers);
+    if(symbols) chars = chars.concat(digits.symbols);
     var result = "";
     for(var i = 0; i < length; i++) {
         result += randomFromArray(chars);

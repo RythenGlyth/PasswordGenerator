@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="main.css">
+        <title>Password Generator</title>
+    </head>
+    <body>
+        <div class="nicelayout">
+            <div class="nicepane">
+                <h1>Password Generator</h1>
+                <div id="optionsForm">
+                    <input type="checkbox" name="speakable">Speakable<br>
+                    &nbsp;&nbsp;↳&nbsp;&nbsp;Suffix (Numbers + Symbols) Length: <input type="number" name="suffixLengthMin" value="1" max="10" min="1"> (Min) - <input type="number" name="suffixLengthMax" value="5" max="10" min="1"> (Max)<br>
+                    &nbsp;&nbsp;↳&nbsp;&nbsp;<input type="checkbox" name="lastSymbol">set Last Symbol<br>
+                    <input type="checkbox" name="allLowerCase">All Letters Lowercase<br>
+                    <input type="checkbox" name="firstUpperCase">First Letter Uppercase<br>
+                    <input type="checkbox" name="numbers">Numbers<br>
+                    <input type="checkbox" name="symbols">Symbols <input type="text" name="syms" id="syms" value="@#*+~-_.,;:?/!|"><br>
+                    Password Count: <input type="number" name="count" value="10" max="100" min="1"><br>
+                    Password Length: <input type="number" name="length" value="12" max="32" min="6"><br>
+                </div>
+                <input type="button" value="Generate" id="genBtn"><br>
+                <input type="button" value="Clear" id="cleaBtn"><br>
+                Passwords:
+                <table id="passwordlist">
+                </table>
+                <script src="index.js"></script>
+            </div>
+        </div>
+    </body>
+</html>
