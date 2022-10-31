@@ -14,8 +14,8 @@ app.use(express.static(path.join(__dirname, '/public')));
 
 app.get("/", (req, res) => {
     res.render("index", {
-        numbers: didgets.numbers,
-        symbols: didgets.symbols,
+        numbers: digits.numbers,
+        symbols: digits.symbols,
     });
 })
 app.get("/favourites", (req, res) => {
@@ -36,8 +36,8 @@ io.on("connection", (socket) => {
     });
 });
 
-const didgets = {
-    vocals: [
+const digits = {
+    vowels: [
         'a', 'A', 'e', 'E', 'i', 'I', 'o', 'O', 'u', 'U',
     ],
     consonants: [
@@ -53,9 +53,9 @@ const didgets = {
     symbolsnumbers: [],
     all: [],
 };
-didgets.letters = didgets.vocals.concat(didgets.consonants);
-didgets.symbolsnumbers = didgets.numbers.concat(didgets.symbols);
-didgets.all = didgets.letters.concat(didgets.symbolsnumbers);
+digits.letters = digits.vowels.concat(digits.consonants);
+digits.symbolsnumbers = digits.numbers.concat(digits.symbols);
+digits.all = digits.letters.concat(digits.symbolsnumbers);
 
 function randomFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -67,17 +67,17 @@ function generateSpeakablePasswords(length, numbers, symbols, suffixLengthMin, s
     while(result.length < length - suffixLength) {
         var toAdd;
         if(Math.floor(Math.random() * 2) == 1) {
-            toAdd = randomFromArray(didgets.vocals) + randomFromArray(didgets.consonants);
+            toAdd = randomFromArray(digits.vowels) + randomFromArray(digits.consonants);
         } else {
-            toAdd = randomFromArray(didgets.consonants) + randomFromArray(didgets.vocals);
+            toAdd = randomFromArray(digits.consonants) + randomFromArray(digits.vowels);
         }
 
         result += toAdd;
     }
     result = result.substring(0, length - suffixLength);
     var chars = [];
-    if(numbers) chars = chars.concat(didgets.numbers);
-    if(symbols && !lastSymbol) chars = chars.concat(didgets.symbols);
+    if(numbers) chars = chars.concat(digits.numbers);
+    if(symbols && !lastSymbol) chars = chars.concat(digits.symbols);
     while(result.length < length - (lastSymbol ? 1 : 0)) {
         var toAdd;
         toAdd = randomFromArray(chars);
@@ -85,16 +85,16 @@ function generateSpeakablePasswords(length, numbers, symbols, suffixLengthMin, s
     }
 
     if(lastSymbol) {
-        result += randomFromArray(didgets.symbols);
+        result += randomFromArray(digits.symbols);
     }
 
     return result.substring(0, length);
 }
 
 function generateNormalPasswords(length, numbers, symbols) {
-    var chars = didgets.letters;
-    if(numbers) chars = chars.concat(didgets.numbers);
-    if(symbols) chars = chars.concat(didgets.symbols);
+    var chars = digits.letters;
+    if(numbers) chars = chars.concat(digits.numbers);
+    if(symbols) chars = chars.concat(digits.symbols);
     var result = "";
     for(var i = 0; i < length; i++) {
         result += randomFromArray(chars);
