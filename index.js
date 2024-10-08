@@ -152,3 +152,13 @@ function generatePasswords(options) {
     }
     return passwords;
 }
+
+Array.from(document.querySelectorAll("input[name]")).forEach((input) => {
+    let savedVal = localStorage.getItem(input.name)
+    if(savedVal) {
+        input[input.type == "checkbox" ? "checked" : "value"] = savedVal;
+    }
+    input.addEventListener("change", () => {
+        localStorage.setItem(input.name, input[input.type == "checkbox" ? "checked" : "value"]);
+    });
+})
