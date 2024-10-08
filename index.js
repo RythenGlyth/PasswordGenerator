@@ -156,9 +156,9 @@ function generatePasswords(options) {
 Array.from(document.querySelectorAll("input[name]")).forEach((input) => {
     let savedVal = localStorage.getItem(input.name)
     if(savedVal) {
-        input[input.type == "checkbox" ? "checked" : "value"] = savedVal;
+        input[input.type == "checkbox" ? "checked" : "value"] = input.type == "checkbox" ? savedVal == "true" : savedVal
     }
     input.addEventListener("change", () => {
-        localStorage.setItem(input.name, input[input.type == "checkbox" ? "checked" : "value"]);
-    });
+        localStorage.setItem(input.name, input[input.type == "checkbox" ? "checked" : "value"])
+    })
 })
